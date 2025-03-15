@@ -27,5 +27,4 @@ jobs:
         with:
           start: npm record-run
           wait-on: 'http://localhost:3000'
-          parallel: true
           browser: chrome
