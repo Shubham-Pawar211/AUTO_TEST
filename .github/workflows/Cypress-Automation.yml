@@ -30,7 +30,7 @@ jobs:
         with:
           working-directory: AUTO_TEST
           publish-summary: true
-          record: false
+          record: true   # ✅ Enables test recording on Cypress Dashboard
           component: false
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
@@ -41,12 +41,17 @@ jobs:
           cd AUTO_TEST
           npx cypress run --spec "cypress/e2e/**/*.cy.js"
 
-      - name: Upload Cypress Artifacts (Screenshots & Videos)
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-artifacts
-          path: |
-            AUTO_TEST/cypress/screenshots/
-            AUTO_TEST/cypress/videos/
-            AUTO_TEST/cypress/results/
-          retention-days: 7
+      - name: Manually Download upload-artifact
+        run: gh extension install actions/upload-artifact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Manually Upload Cypress Artifacts (Screenshots & Videos)
+        run: |
+          mkdir -p uploaded_artifacts
+          cp -r AUTO_TEST/cypress/screenshots uploaded_artifacts/
+          cp -r AUTO_TEST/cypress/videos uploaded_artifacts/
+          cp -r AUTO_TEST/cypress/results uploaded_artifacts/
+          gh run upload-artifact --name cypress-artifacts --path uploaded_artifacts/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
