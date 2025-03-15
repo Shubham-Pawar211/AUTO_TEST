@@ -37,10 +37,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Debug Cypress Test Detection
-        run: npx cypress run --spec "cypress/e2e/**/*.cy.js"
+        run: |
+          cd AUTO_TEST
+          npx cypress run --spec "cypress/e2e/**/*.cy.js"
 
-      - name: Upload Cypress Artifacts
+      - name: Upload Cypress Artifacts (Screenshots & Videos)
         uses: actions/upload-artifact@v3
         with:
           name: cypress-artifacts
-          path: AUTO_TEST/cypress/screenshots/
+          path: |
+            AUTO_TEST/cypress/screenshots/
+            AUTO_TEST/cypress/videos/
+            AUTO_TEST/cypress/results/
+          retention-days: 7
