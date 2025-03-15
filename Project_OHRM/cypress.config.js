@@ -5,7 +5,7 @@ module.exports = defineConfig({
 
     baseUrl: "https://opensource-demo.orangehrmlive.com/",
     // retries: 2,
-    projectId: "29pw5w",
+    projectId: "ec9o8q",
 
     env: {
       baseApiUrl: "https://opensource-demo.orangehrmlive.com/web/index.php",
