@@ -1,6 +1,8 @@
 name: Cypress Tests
 on: [push]
+
 permissions:
+  actions: read
   contents: read
   checks: write
   pull-requests: write
@@ -26,18 +28,15 @@ jobs:
       - name: Install dependencies
         run: |
           cd AUTO_TEST
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
+          rm -rf node_modules package-lock.json
+          npm install
 
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
-          working-directory: AUTO_TEST  
-          record: true
+          working-directory: AUTO_TEST
           parallel: true
+          publish-summary: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
