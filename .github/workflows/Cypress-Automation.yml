@@ -16,6 +16,9 @@ jobs:
         
       - name: Navigate to project directory
         run: cd Project_OHRM
+
+      - name: Node install
+        run: npm install
         
       - name: Cypress run
         # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
