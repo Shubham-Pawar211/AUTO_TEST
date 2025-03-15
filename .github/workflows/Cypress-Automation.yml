@@ -20,7 +20,7 @@ jobs:
           node-version: '22'
           
       - name: Node initialize
-        run: npm init
+        run: npm install --verbose
         
       - name: Clean cache
         run: npm cache clean --force
