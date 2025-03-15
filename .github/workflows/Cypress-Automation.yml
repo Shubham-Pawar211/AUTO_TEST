@@ -4,11 +4,10 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
 
-    # Runs tests in parallel with matrix strategy
     strategy:
       fail-fast: false
       matrix:
-        containers: [1, 2]  # Uses 2 parallel instances
+        containers: [1, 2] 
 
     steps:
       - name: Checkout repository
@@ -17,21 +16,21 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22'  # Specify the Node.js version you're using (update if needed)
+          node-version: '20'
 
       - name: Install dependencies
         run: |
-          cd Project_OHRM
-          rm -rf node_modules package-lock.json  # Ensure clean installation
-          npm install --verbose  # Optional: verbose output
+          cd AUTO_TEST
+          rm -rf node_modules package-lock.json
+          npm ci
 
-      - name: Cypress run
+      - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm start
-          wait-on: 'http://localhost:3000'
+          working-directory: AUTO_TEST
+          wait-on: 'https://opensource-demo.orangehrmlive.com/'
           record: true
-          parallel: true  # Runs tests in parallel
+          parallel: true
         env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}  # Ensure this secret is set in your repo settings
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically set by GitHub Actions
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
