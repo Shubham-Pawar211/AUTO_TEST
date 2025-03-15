@@ -1,30 +1,37 @@
 name: Cypress Tests
-
-on:  
-  push:  
-    branches: main
-  pull_request:  
-    branches: main 
-
+on: [push]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
 
+    # Runs tests in parallel with matrix strategy
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]  # Uses 2 parallel instances
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '22'  # Specify the Node.js version you're using (update if needed)
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd Project_OHRM
+          rm -rf node_modules package-lock.json  # Ensure clean installation
+          npm install --verbose  # Optional: verbose output
 
-      - name: Run Cypress tests
+      - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          start: npm record-run
+          start: npm start
           wait-on: 'http://localhost:3000'
-          browser: chrome
+          record: true
+          parallel: true  # Runs tests in parallel
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}  # Ensure this secret is set in your repo settings
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically set by GitHub Actions
