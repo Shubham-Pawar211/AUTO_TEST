@@ -38,27 +38,26 @@ Cypress.Commands.add('LogIn', (UserID, passWord) => {
 
 })
 
-// to login via API
-// Cypress.Commands.add("loginViaApi", (username, password) => {
-//     cy.request({
-//         method: "GET",
-//         url: `${Cypress.env("baseApiUrl")}/login`,
-//         body: { username, password }
-//     }).then((response) => {
-//         expect(response.status).to.eq(200);
-//         window.localStorage.setItem("authToken", response.body.token);
-//     });
 
-// });
+
+// Cypress.Commands.add("loginViaApi", (username, password) => {
+//     return cy.request('GET', `${Cypress.env('baseApiUrl')}/auth/login`, { username, password })
+//         .then((response) => {
+//             expect(response.status).to.eq(200);
+//             // window.localStorage.setItem('authToken', response.body.token);
+//         });
+// })
 
 Cypress.Commands.add("loginViaApi", (username, password) => {
-    return cy.request('GET', `${Cypress.env('baseApiUrl')}/auth/login`, { username, password })
-        .then((response) => {
-            expect(response.status).to.eq(200);
-            // window.localStorage.setItem('authToken', response.body.token);
-        });
-})
-
+    return cy.request({
+        method: 'GET',
+        url: `${Cypress.env('baseApiUrl')}/auth/login`,
+        qs: { username, password } 
+    }).then((response) => {
+        expect(response.status).to.eq(200);
+        window.localStorage.setItem('authToken', response.body.token); 
+    });
+});
 
 
 // to fetch user details via API
