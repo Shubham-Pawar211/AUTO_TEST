@@ -1,14 +1,9 @@
 name: Cypress Tests
 on: [push]
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-
-    # Runs tests in parallel with matrix strategy
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]  # Uses 2 parallel instances
 
     steps:
       - name: Checkout repository
@@ -17,21 +12,46 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22'  # Specify the Node.js version you're using (update if needed)
+          node-version: '20'
 
-      - name: Install dependencies
+      - name: Clear Cache (Prevent Conflicts)
         run: |
-          cd Project_OHRM
-          rm -rf node_modules package-lock.json  # Ensure clean installation
-          npm install --verbose  # Optional: verbose output
+          rm -rf ~/.npm
+          rm -rf ~/.cache/Cypress
 
-      - name: Cypress run
+      - name: Install Dependencies
+        run: |
+          cd AUTO_TEST
+          rm -rf node_modules package-lock.json
+          npm install
+
+      - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm start
-          wait-on: 'http://localhost:3000'
-          record: true
-          parallel: true  # Runs tests in parallel
+          working-directory: AUTO_TEST
+          publish-summary: true
+          record: true   # ✅ Enables test recording on Cypress Dashboard
+          component: false
         env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}  # Ensure this secret is set in your repo settings
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically set by GitHub Actions
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug Cypress Test Detection
+        run: |
+          cd AUTO_TEST
+          npx cypress run --spec "cypress/e2e/**/*.cy.js"
+
+      - name: Manually Download upload-artifact
+        run: gh extension install actions/upload-artifact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Manually Upload Cypress Artifacts (Screenshots & Videos)
+        run: |
+          mkdir -p uploaded_artifacts
+          cp -r AUTO_TEST/cypress/screenshots uploaded_artifacts/
+          cp -r AUTO_TEST/cypress/videos uploaded_artifacts/
+          cp -r AUTO_TEST/cypress/results uploaded_artifacts/
+          gh run upload-artifact --name cypress-artifacts --path uploaded_artifacts/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
