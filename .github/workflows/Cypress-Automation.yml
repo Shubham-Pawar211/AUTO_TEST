@@ -14,14 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Navigate to project directory
+        run: cd ../Project_OHRM
+  
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          
-      - name: Node initialize
-        run: npm install --verbose
-        
+                 
       - name: Clean cache
         run: npm cache clean --force
 
