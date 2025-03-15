@@ -25,26 +25,22 @@ jobs:
           rm -rf node_modules package-lock.json
           npm install
 
-      - name: Run Cypress Tests with Recording
+      - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
           working-directory: AUTO_TEST
           publish-summary: true
-          record: true
+          record: false
           component: false
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Debug Cypress Test Detection
-        run: |
-          cd AUTO_TEST
-          npx cypress run --spec "cypress/e2e/**/*.cy.js"
+        run: npx cypress run --spec "cypress/e2e/**/*.cy.js"
 
       - name: Upload Cypress Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: cypress-results
-          path: |
-            AUTO_TEST/cypress/screenshots
-            AUTO_TEST/cypress/videos
+          name: cypress-artifacts
+          path: AUTO_TEST/cypress/screenshots/
