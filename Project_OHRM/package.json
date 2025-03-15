@@ -1,0 +1,16 @@
+{
+  "name": "projectohrm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run",
+    "record-run": "npx cypress run --record --key 24d0db22-343b-457b-ba98-2c9743e1d8df"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cypress": "^14.2.0"
+  }
+}
