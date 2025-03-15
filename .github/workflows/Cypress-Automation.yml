@@ -18,13 +18,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-
+          
+      - name: Node initialize
+        run: npm init
+        
       - name: Clean cache
         run: npm cache clean --force
 
       - name: Remove package lock
         run: rm -rf node_modules package-lock.json
-        
+             
       - name: Install dependencies
         run: npm install
 
