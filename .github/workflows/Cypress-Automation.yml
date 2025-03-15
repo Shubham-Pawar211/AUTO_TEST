@@ -1,20 +1,9 @@
 name: Cypress Tests
 on: [push]
 
-permissions:
-  actions: read
-  contents: read
-  checks: write
-  pull-requests: write
-
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
 
     steps:
       - name: Checkout repository
@@ -25,7 +14,12 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
+      - name: Clear Cache (Prevent Conflicts)
+        run: |
+          rm -rf ~/.npm
+          rm -rf ~/.cache/Cypress
+
+      - name: Install Dependencies
         run: |
           cd AUTO_TEST
           rm -rf node_modules package-lock.json
@@ -35,8 +29,12 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: AUTO_TEST
-          parallel: true
           publish-summary: true
+          record: false
+          component: false
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug Cypress Test Detection
+        run: npx cypress run --spec "cypress/e2e/**/*.cy.js"
