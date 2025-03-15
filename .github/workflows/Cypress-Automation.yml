@@ -16,6 +16,9 @@ jobs:
         
       - name: Navigate to project directory
         run: cd Project_OHRM
+
+      - name: Install
+        run: npm install --verbose
         
       - name: Remove lockfile
         run: rm -rf node_modules package-lock.json
