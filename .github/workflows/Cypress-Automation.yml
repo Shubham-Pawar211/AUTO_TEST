@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        containers: [1, 2] 
+        containers: [1, 2]  
 
     steps:
       - name: Checkout repository
@@ -16,19 +16,22 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '20'  
 
       - name: Install dependencies
         run: |
           cd AUTO_TEST
-          rm -rf node_modules package-lock.json
-          npm ci
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
-          working-directory: AUTO_TEST
-          wait-on: 'https://opensource-demo.orangehrmlive.com/'
+          working-directory: AUTO_TEST  
+          wait-on: 'https://opensource-demo.orangehrmlive.com/'  
           record: true
           parallel: true
         env:
