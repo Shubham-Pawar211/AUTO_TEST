@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Navigate to project directory
-        run: cd /home/runner/work/AUTO_TEST/Project_OHRM
+        run: ls
         
       - name: Cypress run
         # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
