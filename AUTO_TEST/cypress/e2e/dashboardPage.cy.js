@@ -5,7 +5,6 @@ const { LogIn } = require("../pageObject/loginPage");
 describe('Dashboard page Test cases', () => {
     beforeEach(() => {
         cy.visit('/')
-        // cy.LogIn('Admin', 'admin123')
 
     });
 
@@ -13,8 +12,8 @@ describe('Dashboard page Test cases', () => {
     const log_In = new LogIn
 
     it('Validates user is redirected to the Dashboard after login', () => {
-        log_In.enterUsername('Admin')
-        log_In.enterPassword('admin123')
+        log_In.enterUsername(Cypress.env('username'))
+        log_In.enterPassword(Cypress.env('password'))
         log_In.clickLoginBtn()
         
         cy.url().should('include', '/dashboard')
@@ -22,8 +21,8 @@ describe('Dashboard page Test cases', () => {
     });
 
     it('Verify that the user’s name is displayed correctly', () => {
-        log_In.enterUsername('Admin')
-        log_In.enterPassword('admin123')
+        log_In.enterUsername(Cypress.env('username'))
+        log_In.enterPassword(Cypress.env('password'))
         log_In.clickLoginBtn()
         
         cy.get('.oxd-userdropdown-name').should('be.visible')
@@ -31,8 +30,8 @@ describe('Dashboard page Test cases', () => {
     });
 
     it('Validates the presence of main navigation items', () => {
-        log_In.enterUsername('Admin')
-        log_In.enterPassword('admin123')
+        log_In.enterUsername(Cypress.env('username'))
+        log_In.enterPassword(Cypress.env('password'))
         log_In.clickLoginBtn()
         
         const menuItems = ['Admin', 'PIM', 'Leave', 'Time', 'Recruitment', 'My Info', 'Dashboard', 'Maintenance']
@@ -43,8 +42,8 @@ describe('Dashboard page Test cases', () => {
     });
 
     it('Checks responsiveness using different viewports', () => {
-        log_In.enterUsername('Admin')
-        log_In.enterPassword('admin123')
+        log_In.enterUsername(Cypress.env('username'))
+        log_In.enterPassword(Cypress.env('password'))
         log_In.clickLoginBtn()
         
         const viewports = ['macbook-15', 'ipad-2', 'iphone-x']

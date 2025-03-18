@@ -1,26 +1,25 @@
 
 export class LogIn {
 
-    // visitUrl(url) {
-    //     cy.visit(url)
-    // }
-
+    logIn_username = '[placeholder="Username"]';
+    logIn_password = '[placeholder="Password"]';
+    logIn_button = '.orangehrm-login-button';
 
     enterUsername(UserID) {
 
-        cy.get('[placeholder="Username"]').type(UserID)
+        cy.get(this.logIn_username).type(UserID)
 
     }
 
     enterPassword(passWord) {
 
-        cy.get('[placeholder="Password"]').type(passWord)
+        cy.get(this.logIn_password).type(passWord)
 
     }
 
     clickLoginBtn() {
 
-        cy.get('.orangehrm-login-button').click()
+        cy.get(this.logIn_button).click()
 
     }
 

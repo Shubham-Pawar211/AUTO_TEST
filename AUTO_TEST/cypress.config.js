@@ -4,7 +4,7 @@ module.exports = defineConfig({
   e2e: {
 
     baseUrl: "https://opensource-demo.orangehrmlive.com/",
-    // retries: 2,
+    retries: 2,
     projectId: "ec9o8q",
 
     env: {
@@ -17,7 +17,7 @@ module.exports = defineConfig({
     watchForFileChanges: true,
 
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+
     },
   },
 });
