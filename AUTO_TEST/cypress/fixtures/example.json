@@ -3,12 +3,13 @@
     "uname": "Admin",
     "pwd": "admin123"
   },
-
-
+  
   "invalidData": {
     "uname": "admin",
     "pwd": "ADmin111"
-  }
-  
-}
+  },
 
+    "validUser": {
+    "name": "Le Anh Bao"
+  }
+}

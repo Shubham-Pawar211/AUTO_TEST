@@ -1,32 +1,25 @@
-beforeEach(() => {
-    cy.visit('/');
-    cy.fixture('example').as('jsonData');
-
-});
-
-
 describe('Stub API Responses for Login', () => {
     beforeEach(() => {
         cy.visit('/');
         cy.fixture('example').as('jsonData');
     });
 
-    it('Mock a successful login response', function () {
-        cy.intercept('GET', '/web/index.php/api/v2/dashboard/shortcuts', {
+
+    it('Stub API responses for login', function () {
+        cy.intercept('GET', '**/dashboard/shortcuts*', {
             statusCode: 200,
-            body: { token: 'mocked_token', message: 'Login Successful' }
         }).as('stubLogin');
 
-        cy.LogIn(this.jsonData.validData.uname, this.jsonData.validData.pwd);
+        cy.LogIn(Cypress.env('username'), Cypress.env('password'));
 
         cy.wait('@stubLogin').its('response.statusCode').should('eq', 200);
         cy.url().should('include', '/dashboard');
     });
 
-    it('Mock a failed login response', function () {
-        cy.intercept('POST', '/web/index.php/auth/validate', {
-            statusCode: 401,
-            body: { message: 'Invalid credentials' }
+
+    it('Mocks a failed login response and verifies error handling', function () {
+        cy.intercept('POST', '**/auth/validate*', {
+            statusCode: 401
         }).as('stubFailedLogin');
 
         cy.LogIn(this.jsonData.invalidData.uname, this.jsonData.invalidData.pwd);
@@ -36,19 +29,14 @@ describe('Stub API Responses for Login', () => {
         });
     });
 
-    it('Intercept the Dashboard API Response', () => {
-        cy.intercept('GET', '/web/index.php/dashboard/index', {
-            statusCode: 200,
-            body: {
-                dashboard: {
-                    welcomeMessage: 'Welcome dear User!',
-                    recentActivities: ['Task 1', 'Task 2', 'Task 3']
-                }
-            }
-        }).as('getDashboard');
+
+    it('Intercepts the Dashboard API response and validates data', () => {
+        cy.intercept('GET', '**/dashboard/shortcuts*', { statusCode: 200, }).as('getDashboard');
 
         cy.LogIn(Cypress.env('username'), Cypress.env('password'));
         cy.wait('@getDashboard');
         cy.get('@getDashboard').its('response.statusCode').should('eq', 200);
+        cy.get('.oxd-topbar-header-title').should('include.text', 'Dashboard');
+
     });
 });

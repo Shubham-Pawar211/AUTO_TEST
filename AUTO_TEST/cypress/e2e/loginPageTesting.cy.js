@@ -4,6 +4,7 @@ beforeEach(() => {
 
 });
 
+
 describe('Login Page Testing', () => {
 
     it('login using data from cypress environment json', () => {
@@ -14,6 +15,7 @@ describe('Login Page Testing', () => {
         cy.url().should('include', '/dashboard');
         cy.get('.oxd-topbar-header-title').should('contain', 'Dashboard');
     });
+
 
     it('Validates successful login with admin credentials', function () {
         cy.intercept('POST', '/web/index.php/events/push').as('login');
@@ -28,12 +30,14 @@ describe('Login Page Testing', () => {
         cy.get('.oxd-topbar-header-title').should('contain', 'Dashboard');
     });
 
+
     it('Validate "Required" error message for empty username and password', () => {
         cy.get('button').contains(' Login ').click();
 
         cy.get('.oxd-input-group__message').eq(0).should('contain', 'Required');
         cy.get('.oxd-input-group__message').eq(1).should('contain', 'Required');
     });
+
 
     it('Validate error message for incorrect credentials', function () {
         cy.getByPlaceholder('Username').type(this.jsonData.invalidData.uname);

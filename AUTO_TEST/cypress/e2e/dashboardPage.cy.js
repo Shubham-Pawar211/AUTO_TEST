@@ -1,35 +1,45 @@
 const { LogIn } = require("../pageObject/loginPage");
 
 describe('Dashboard page Test cases', () => {
-    beforeEach(() => {
-        cy.visit('/');
-    });
 
     const log_In = new LogIn();
 
-    it('Validates user is redirected to the Dashboard after login', () => {
+    beforeEach(() => {
+        cy.visit('/');
         log_In.enterUsername(Cypress.env('username'));
         log_In.enterPassword(Cypress.env('password'));
         log_In.clickLoginBtn();
-        
+    });
+
+
+
+    it('Validates user is redirected to the Dashboard after login', () => {
+
         cy.url().should('include', '/dashboard');
         cy.get('.oxd-topbar-header-title').should('include.text', 'Dashboard');
     });
 
+
     it('Verify that the user’s name is displayed correctly', () => {
-        log_In.enterUsername(Cypress.env('username'));
-        log_In.enterPassword(Cypress.env('password'));
-        log_In.clickLoginBtn();
-        
-        cy.get('.oxd-userdropdown-name').should('be.visible')
+
+        cy.get('.oxd-userdropdown-name').should('exist')
+            .and('be.visible')
             .and('contain', 'Le Anh Bao');
     });
 
+    it('Verify that the correct user name is displayed on dashboard', function () {
+        cy.fixture('example').then((data) => {
+            cy.get('.oxd-userdropdown-name')
+                .should('exist') 
+                .and('be.visible')
+                .and('contain', data.validUser.name); 
+        });
+    });
+    
+
+
     it('Validates the presence of main navigation items', () => {
-        log_In.enterUsername(Cypress.env('username'));
-        log_In.enterPassword(Cypress.env('password'));
-        log_In.clickLoginBtn();
-        
+
         const menuItems = ['Admin', 'PIM', 'Leave', 'Time', 'Recruitment', 'My Info', 'Dashboard', 'Maintenance'];
 
         menuItems.forEach((item) => {
@@ -37,11 +47,9 @@ describe('Dashboard page Test cases', () => {
         });
     });
 
+
     it('Checks responsiveness using different viewports', () => {
-        log_In.enterUsername(Cypress.env('username'));
-        log_In.enterPassword(Cypress.env('password'));
-        log_In.clickLoginBtn();
-        
+
         const viewports = ['macbook-15', 'ipad-2', 'iphone-x'];
 
         viewports.forEach((viewport) => {
