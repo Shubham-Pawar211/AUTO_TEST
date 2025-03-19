@@ -30,7 +30,7 @@ jobs:
         with:
           working-directory: AUTO_TEST
           publish-summary: true
-          record: true   # ✅ Enables test recording on Cypress Dashboard
+          record: true   # Enables test recording on Cypress Dashboard
           component: false
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
