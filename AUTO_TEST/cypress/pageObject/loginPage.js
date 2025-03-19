@@ -1,4 +1,3 @@
-
 export class LogIn {
 
     logIn_username = '[placeholder="Username"]';
@@ -6,23 +5,14 @@ export class LogIn {
     logIn_button = '.orangehrm-login-button';
 
     enterUsername(UserID) {
-
-        cy.get(this.logIn_username).type(UserID)
-
+        cy.get(this.logIn_username).type(UserID);
     }
 
     enterPassword(passWord) {
-
-        cy.get(this.logIn_password).type(passWord)
-
+        cy.get(this.logIn_password).type(passWord);
     }
 
     clickLoginBtn() {
-
-        cy.get(this.logIn_button).click()
-
+        cy.get(this.logIn_button).click();
     }
-
 }
-
-
