@@ -31,7 +31,6 @@ describe('Dashboard page Test cases', () => {
     });
     
 
-
     it('Validates the presence of main navigation items', () => {
 
         const menuItems = ['Admin', 'PIM', 'Leave', 'Time', 'Recruitment', 'My Info', 'Dashboard', 'Maintenance'];
