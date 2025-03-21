@@ -21,6 +21,7 @@ describe('Dashboard page Test cases', () => {
 
 
         it('Verify that the correct user name is displayed on dashboard', function () {
+            
         cy.fixture('example').then((data) => {
             cy.get('.oxd-userdropdown-name')
                 .should('exist') 
